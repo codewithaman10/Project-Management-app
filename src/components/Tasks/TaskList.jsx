@@ -52,7 +52,7 @@ export function Task({task, dispatch}) {
     }
 
     return(
-        <div className="flex bg-stone-100 p-1 m-1rounded-lg" >
+        <div className="flex bg-stone-100 p-2 m-2 rounded-lg" >
             <div className="flex items-center h-7">
                 <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" 
                 value="" 

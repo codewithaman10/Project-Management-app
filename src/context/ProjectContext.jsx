@@ -38,7 +38,7 @@ export const Reducer = (state, action) => {
             let currentTasks = state.tasks.filter(task => task.projectId === state.selectedProjectId)[0];
             return {
                 ...state,
-                projects: [...state.projects],
+                // projects: [...state.projects],       No Need not touching the projects here
                 tasks: [
                     ...state.tasks.filter(task => task.projectId !== state.selectedProjectId),
                     {
@@ -73,7 +73,7 @@ export const Reducer = (state, action) => {
             const taskListToBeUpdated = state.tasks.filter(task => task.projectId === state.selectedProjectId)[0];
             return {
                 ...state,
-                projects: [...state.projects],
+                // projects: [...state.projects],       No need
                 tasks: state.tasks.map(task => {
                         console.log(task);
                         if(task.projectId !== state.selectedProjectId) {
@@ -107,7 +107,7 @@ export const Reducer = (state, action) => {
             let currentTasks = state.tasks.filter(task => task.projectId === state.selectedProjectId)[0];
             return {
                 ...state,
-                projects: [...state.projects],
+                // projects: [...state.projects],   No need
                 tasks: [
                     ...state.tasks.filter(task => task.projectId !== state.selectedProjectId),
                     {
@@ -149,8 +149,9 @@ export const Reducer = (state, action) => {
             console.log("Inside the " + action.type + " reducer.");
             return {
                 ...state,
-                projects: [...state.projects],
-                tasks: [...state.tasks],
+                // No need as we are not touching the Projects and tasks
+                // projects: [...state.projects],
+                // tasks: [...state.tasks],
                 selectedProjectId: action.projectId
             }   
         }

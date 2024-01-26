@@ -1,8 +1,7 @@
 import Button from "./Button";
-import NewProject from "./NewProject";
-import Project from "./Project";
+import Projects from "./Projects";
 
-export default function ProjectSidebar({onStartAddProject}) {
+export default function ProjectSidebar({ projects, onStartAddProject, onSelect, selectedProjectId }) {
 
     const handleButtonClick = () => {
         console.log("Button is clicked to add a new project");
@@ -14,7 +13,7 @@ export default function ProjectSidebar({onStartAddProject}) {
             <div>    
                 <Button onClick={onStartAddProject}>+ Add Project</Button>
             </div>
-            <Project />
+            <Projects projects={projects} onSelect={onSelect} selectedProjectId={selectedProjectId} />
         </aside>
     );
 }

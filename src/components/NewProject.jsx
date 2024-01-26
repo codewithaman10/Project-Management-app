@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
 import Input from "./Input";
+import Modal from "./Modal";
 
-export default function NewProject({handleSaveNewProject}) {
+export default function NewProject({handleSaveNewProject, handleCancleEvent}) {
     const titleRef = useRef();
     const descriptionRef = useRef();
     const dueDateRef = useRef();
+    const modal = useRef();
 
     const handleSave = () => {
         const title = titleRef.current.value;   // .value since all the textarea and input html tag have value in which they stores the value
@@ -12,10 +14,17 @@ export default function NewProject({handleSaveNewProject}) {
         const dueDate = dueDateRef.current.value;
 
         // Validation of these values
+        if (title.trim() === '' || description.trim() === '' || dueDate.trim() === '') {
+            // In case the above validations fails we should show the user an error modal or just a simple error message
+            modal.current.open();
+            return;
+        } 
+
         const newProject = {
             title: title,
             description: description, 
-            dueDate: dueDate
+            dueDate: dueDate,
+            tasks: []
         };
 
         handleSaveNewProject(newProject);
@@ -32,20 +41,26 @@ export default function NewProject({handleSaveNewProject}) {
     }, []);
 
     return (
-        <div className="w-[35rem] mt-16">
-            <menu className="flex items-center justify-end gap-4 my-4">
-                <li>
-                    <button onClick={() => console.log()} className="text-stone-800 hover:text-stone-950">Cancel</button>     
-                </li>
-                <li>
-                    <button onClick={handleSave} className="bg-stone-800 text-stone-50 hover:bg-stone-950 px-6 py-2 rounded-md">Save</button>
-                </li>
-            </menu>
-            <div>
-                <Input ref={titleRef} label="TITLE" placeholder="Enter Project Title"/>
-                <Input ref={descriptionRef} label="DESCRIPTION" isTextArea placeholder="Description about the project..."/>
-                <Input ref={dueDateRef} label="DUE DATE" type="date" />
+        <>
+            <Modal ref={modal} buttonCaption="Close">
+                <h2 className="text-xl font-bold text-stone-700 my-4">Invalid Input</h2>
+                <p className="text-stone-600 mb-4">Please provide valid value for all the inputs.</p>
+            </Modal>
+            <div className="w-[35rem] mt-16">
+                <menu className="flex items-center justify-end gap-4 my-4">
+                    <li>
+                        <button onClick={handleCancleEvent} className="text-stone-800 hover:text-stone-950">Cancel</button>     
+                    </li>
+                    <li>
+                        <button onClick={handleSave} className="bg-stone-800 text-stone-50 hover:bg-stone-950 px-6 py-2 rounded-md">Save</button>
+                    </li>
+                </menu>
+                <div>
+                    <Input ref={titleRef} label="TITLE" placeholder="Enter Project Title"/>
+                    <Input ref={descriptionRef} label="DESCRIPTION" isTextArea placeholder="Description about the project..."/>
+                    <Input ref={dueDateRef} label="DUE DATE" type="date" />
+                </div>
             </div>
-        </div>
+        </>
     );
 }

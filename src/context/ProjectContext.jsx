@@ -11,8 +11,10 @@ export const Actions = {
     DELETE_TASK: 'deleteTask',
     COMPLETE_TASK: 'completeTask',
     ADD_PROJECT: 'addProject',
+    ADD_NEW_PROJECT: 'addNewProject',
     DELETE_PROJECT: 'deleteProject',
-    SELECT_PROJECT: 'selectProject'
+    SELECT_PROJECT: 'selectProject',
+    CANCEL_PROJECT_SELECT: 'cancleProjectSelect'
 }
 
 // My Project Management initial state
@@ -26,18 +28,6 @@ export const initialState = {
 export const ProjectContext = createContext(null);
 export const ProjectDispatchContext = createContext(null);
 
-export function ProjectProvide({ children }) {
-    const [projectsData, dispatch] = useReducer(Reducer, initialState);
-
-    return (
-        <ProjectContext.Provider value={projectsData}>
-            <ProjectDispatchContext.Provider value={dispatch}>
-                { children }
-            </ProjectDispatchContext.Provider>
-        </ProjectContext.Provider>
-    );
-}
-
 export const Reducer = (state, action) => {
     switch(action.type) {
         case 'addTask' : {
@@ -46,6 +36,7 @@ export const Reducer = (state, action) => {
             console.log("Inside the " + action.type + " reducer function adding task with title: " + action.title);
             console.log(state);
             let currentTasks = state.tasks.filter(task => task.projectId === state.selectedProjectId);
+            console.log(currentTasks);
             return {
                 ...state,
                 projects: [...state.projects],
@@ -149,6 +140,20 @@ export const Reducer = (state, action) => {
                 selectedProjectId: undefined,
                 projects: state.projects.filter(project => project.id !== state.selectedProjectId),
                 tasks: state.tasks.filter(task => task.projectId !== state.selectedProjectId)
+            }
+        }
+        case 'addNewProject': {
+            console.log("Inside the " + action.type + " reducer.");
+            return {
+                ...state,
+                selectedProjectId: null
+            }
+        }
+        case 'cancleProjectSelect': {
+            console.log("Inside the " + action.type + " reducer.");
+            return {
+                ...state,
+                selectedProjectId: undefined
             }
         }
         default:

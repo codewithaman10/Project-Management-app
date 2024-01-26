@@ -1,4 +1,19 @@
-export default function Projects({ projects, onSelect, selectedProjectId }) {
+import { Actions } from "../context/ProjectContext";
+import { useProject, useProjectDispatch } from "./hooks/customHook";
+
+export default function Projects() {
+    const projectsData = useProject();
+    const dispatch = useProjectDispatch();
+    const projects = projectsData.projects;
+    const selectedProjectId = projectsData.selectedProjectId;
+
+    const onSelect = (projectId) => {
+        dispatch({
+            type: Actions.SELECT_PROJECT,
+            projectId: projectId
+        });
+    }
+
     return (
         <ul className="mt-8">
             {

@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Actions } from "../reducer/Reducer";
+import { Actions } from "../../context/ProjectContext";
 
 // Get the List of Tasks and convert them to JSX
 export default function TaskList({ tasks, dispatch }) {

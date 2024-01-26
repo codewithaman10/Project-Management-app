@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
+import { useProjectDispatch } from "./hooks/customHook";
+import { Actions } from "../context/ProjectContext";
 
-export default function NewProject({handleSaveNewProject, handleCancleEvent}) {
+export default function NewProject() {
     const titleRef = useRef();
     const descriptionRef = useRef();
     const dueDateRef = useRef();
     const modal = useRef();
+    const dispatch = useProjectDispatch();
 
     const handleSave = () => {
         const title = titleRef.current.value;   // .value since all the textarea and input html tag have value in which they stores the value
@@ -18,16 +21,20 @@ export default function NewProject({handleSaveNewProject, handleCancleEvent}) {
             // In case the above validations fails we should show the user an error modal or just a simple error message
             modal.current.open();
             return;
-        } 
+        }
 
-        const newProject = {
+        dispatch({
+            type: Actions.ADD_PROJECT,
             title: title,
             description: description, 
             dueDate: dueDate,
-            tasks: []
-        };
+        });
+    }
 
-        handleSaveNewProject(newProject);
+    const handleCancleEvent = () => {
+        dispatch({
+            type: Actions.CANCEL_PROJECT_SELECT
+        });
     }
 
     useEffect(() => {

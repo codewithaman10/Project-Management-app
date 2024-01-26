@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Actions } from "../reducer/Reducer";
+import { useProjectDispatch } from "../hooks/customHook";
+import { Actions } from "../../context/ProjectContext";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
-// dispatch method will come from the parent of AddTask in form of a prop
-export default function AddTasks({ dispatch }) {
+export default function AddTasks() {
+    const dispatch = useProjectDispatch();
     const [title, setTitle] = useState('');
 
     const handleInputChange = (event) => {
@@ -14,7 +15,7 @@ export default function AddTasks({ dispatch }) {
 
     const handleAddTask = (e) => {
         console.log("Dispatching action: ", Actions.ADD_TASK);
-        // Here we are telling React "what the use just did" by dispatching the below action
+        // Here we are telling React "what the user just did" by dispatching the below action
         // Unlike instead of telling react "what to do" by setting state
         dispatch({
             type: Actions.ADD_TASK,

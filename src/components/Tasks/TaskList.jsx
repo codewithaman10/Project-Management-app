@@ -25,11 +25,9 @@ export function Task({task, dispatch}) {
     const handleCheckBox = (event) => {
         dispatch({
             type: Actions.UPDATE_TASK,
-            newTask: {
-                ...task,
-                done: event.target.checked,
-                updatedAt: Date.now(),
-            }
+            taskId: task.id,
+            done: event.target.checked,
+            updatedAt: new Date().toISOString(),
         });
     }
 
@@ -37,11 +35,9 @@ export function Task({task, dispatch}) {
     const handleTitleUpdate = () => {
         dispatch({
             type: Actions.UPDATE_TASK,
-            newTask: {
-                ...task,
-                title: updatedTitle,
-                updatedAt: new Date().toISOString(),
-            }
+            taskId: task.id,
+            title: updatedTitle,
+            updatedAt: new Date().toISOString(),
         });
         
         // Once the action is dispatched to update the Task List set isEditing to false again
@@ -51,35 +47,48 @@ export function Task({task, dispatch}) {
     const handleTaskDelete = () => {
         dispatch({
             type: Actions.DELETE_TASK,
-            id: task.id,
+            taskId: task.id,
         });
     }
 
     return(
-        <Fragment>
-            <input type="checkbox" checked={task.done} onChange={handleCheckBox}/>
-            {
+        <div className="flex my-4">
+            <div className="flex items-center h-7">
+                <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" 
+                value="" 
+                onChange={handleCheckBox}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+            </div>
+            <div className="ms-2 text-md">
+                {
                 !isEditing ? 
                 <>
-                    <span >{task.title}</span>
+                    <label for="helper-checkbox" className="font-medium text-stone-900 dark:text-stone-800">
+                        <span className={task.done ? "line-through":""}>{task.title}</span>
+                    </label>
+                    <p id="helper-checkbox-text " className="text-xs font-normal text-gray-500 dark:text-gray-600">{task.updatedAt}</p>
                     {/* <span className="timeStamp">{task.updatedAt}</span> */}
-                    <button onClick={() => setIsEditing(true)}>Edit</button>      {/* This button will update the local isEditing state of Task component */}
-                    <button onClick={handleTaskDelete}>Delete</button>  {/* This button will dispatch the DELETE action to the Reducer */}
+                    <button disabled={task.done} className="inline text-stone-800 hover:text-stone-900 px-2 py-2 bg-gray-200 rounded-lg disabled:text-stone-400" onClick={() => setIsEditing(true)}>Edit</button>      {/* This button will update the local isEditing state of Task component */}
+                    <button className="inline text-red-400 hover:text-red-900 px-2 py-2 bg-gray-200 rounded-lg" onClick={handleTaskDelete}>Delete</button>  {/* This button will dispatch the DELETE action to the Reducer */}
                 </>
                 : 
                 // Show the input text box to update the title
-                <>
-                    <input type="text" value={updatedTitle} onChange={
+                <div className="flex">
+                    <input className="w-full px-2 py-1 rounded-md bg-stone-200"
+                    type="text" value={updatedTitle} onChange={
                         (e) => {
                             {/* Just update the local state to track the updated title */}
                             setUpdatedTitle(e.target.value);
                         }} 
                     />
-                    <button onClick={handleTitleUpdate}>
+                    <button className="inline text-stone-600 hover:text-stone-900 px-1 py-1 ml-1 bg-gray-200 rounded-lg disabled:text-stone-400" 
+                        disabled={updatedTitle.length === 0}
+                        onClick={handleTitleUpdate}>
                         Save
                     </button>
-                </> 
+                </div> 
             }
-        </Fragment>
+            </div>
+        </div>
     );
 }

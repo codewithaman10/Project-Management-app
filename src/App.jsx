@@ -26,7 +26,7 @@ function App() {
   } else {
     const selectedProject = projectsData.projects.find(project => project.id === projectsData.selectedProjectId);
     const selectedProjectTasks = projectsData.tasks.find(task => task.projectId === projectsData.selectedProjectId);
-    content = <ProjectDetails project={selectedProject} projectTasks={selectedProjectTasks}/>;
+    content = <ProjectDetails project={selectedProject} projectTasks={selectedProjectTasks.taskList}/>;
   }
 
   return (

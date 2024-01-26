@@ -27,11 +27,11 @@ export default function AddTasks() {
 
     return(
         <div className="flex items-center gap-4">
-            <input value={title} className="w-64 px-2 py-1 rounded-md bg-stone-200" placeholder="# Add new Task"
+            <input value={title} className="w-11/12 px-2 py-1 rounded-md bg-stone-200" placeholder="# Add new Task"
             onChange={handleInputChange} onKeyDown={(e) => {
                 if(e.key === 'Enter') handleAddTask(e);
             }}/>
-            <button className="text-stone-750 hover:text-stone-950 disabled:text-gray-500" onClick={handleAddTask} disabled={title === ''}>
+            <button className="text-stone-750 hover:text-stone-950 w-1/12 disabled:text-gray-500 " onClick={handleAddTask} disabled={title === ''}>
                 Add Task
             </button>
         </div>

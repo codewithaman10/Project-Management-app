@@ -35,8 +35,7 @@ export const Reducer = (state, action) => {
             // don't forgot to return otherwise the control will fall-over to the next case
             console.log("Inside the " + action.type + " reducer function adding task with title: " + action.title);
             console.log(state);
-            let currentTasks = state.tasks.filter(task => task.projectId === state.selectedProjectId);
-            console.log(currentTasks);
+            let currentTasks = state.tasks.filter(task => task.projectId === state.selectedProjectId)[0];
             return {
                 ...state,
                 projects: [...state.projects],
@@ -71,19 +70,41 @@ export const Reducer = (state, action) => {
         case 'updateTask' : {
             // .map will return us a new updated array
             console.log("Inside the " + action.type + " reducer.");
-            return state.map(
-                (task) => {
-                    if (task.id === action.newTask.id) {
-                        return action.newTask;
-                    } else  
-                        return task;
-                }
-            );
+            const taskListToBeUpdated = state.tasks.filter(task => task.projectId === state.selectedProjectId)[0];
+            return {
+                ...state,
+                projects: [...state.projects],
+                tasks: state.tasks.map(task => {
+                        console.log(task);
+                        if(task.projectId !== state.selectedProjectId) {
+                            return task;
+                        } 
+                        else {
+                            const updatedTaskList = {
+                                ...task,
+                                taskList: task.taskList.map(taskForProject => {
+                                    if (taskForProject.id === action.taskId) {
+                                        return {
+                                            ...taskForProject,
+                                            done: action.done === undefined ? taskForProject.done : action.done,
+                                            updatedAt: action.updatedAt,
+                                            title: action.title === undefined ? taskForProject.title : action.title
+                                        }
+                                    } else {
+                                        return taskForProject;
+                                    }
+                                })
+                            }
+                            console.log(updatedTaskList);
+                            return updatedTaskList;
+                        }
+                    })
+            }
         }
         case 'deleteTask' : {
             // .filter will return us the copy of the old array without those elements
             console.log("Inside the " + action.type + " reducer.");
-            let currentTasks = state.tasks.filter(task => task.projectId === state.selectedProjectId);
+            let currentTasks = state.tasks.filter(task => task.projectId === state.selectedProjectId)[0];
             return {
                 ...state,
                 projects: [...state.projects],
@@ -92,7 +113,7 @@ export const Reducer = (state, action) => {
                     {
                         ...currentTasks,
                         taskList: [
-                            ...currentTasks.taskList.filter(task => task.id !== action.id)
+                            ...currentTasks.taskList.filter(task => task.id !== action.taskId)
                         ]
                     }
                 ]
